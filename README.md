@@ -68,10 +68,10 @@ bank-fraud-detection/
 
 ##  App Features
 
-### 🔢 Manual Input
+### Manual Input
 Enter individual transaction details (Time, Amount, V1–V28) and get an instant fraud prediction with a confidence score and risk meter.
 
-### 📁 Batch CSV Upload
+### Batch CSV Upload
 Upload a CSV file with multiple transactions — the app flags all suspicious ones and lets you download the results.
 
 ---
