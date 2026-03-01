@@ -6,7 +6,7 @@ import pandas as pd
 # ── Page Config ──────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="Bank Fraud Detector",
-    page_icon="🏦",
+    page_icon="",
     layout="wide"
 )
 
@@ -56,7 +56,7 @@ def load_model():
 model, scaler = load_model()
 
 # ── Header ────────────────────────────────────────────────────────────────────
-st.markdown("## 🏦 Bank Fraud Detection System")
+st.markdown("##  Bank Fraud Detection System")
 st.markdown("*Powered by Machine Learning — Random Forest Classifier*")
 st.divider()
 
@@ -74,17 +74,17 @@ with col4:
 st.divider()
 
 # ── Input Mode ────────────────────────────────────────────────────────────────
-tab1, tab2 = st.tabs(["🔢 Manual Input", "📁 Upload CSV"])
+tab1, tab2 = st.tabs([" Manual Input", " Upload CSV"])
 
 with tab1:
     st.markdown("### Enter Transaction Details")
-    st.info("💡 V1–V28 are PCA-anonymized features from the bank. Enter the values from your transaction record.")
+    st.info(" V1–V28 are PCA-anonymized features from the bank. Enter the values from your transaction record.")
 
     col_l, col_r = st.columns(2)
 
     with col_l:
-        time_val = st.number_input("⏱️ Time (seconds since first transaction)", value=0.0)
-        amount_val = st.number_input("💰 Amount ($)", value=100.0, min_value=0.0)
+        time_val = st.number_input(" Time (seconds since first transaction)", value=0.0)
+        amount_val = st.number_input(" Amount ($)", value=100.0, min_value=0.0)
         st.markdown("**V1 – V14**")
         v_vals = []
         cols = st.columns(2)
@@ -97,7 +97,7 @@ with tab1:
         for i in range(15, 29):
             v_vals.append(cols2[(i-15) % 2].number_input(f"V{i}", value=0.0, key=f"v{i}"))
 
-    if st.button("🔍 Analyze Transaction", use_container_width=True, type="primary"):
+    if st.button(" Analyze Transaction", use_container_width=True, type="primary"):
         amount_scaled = scaler.transform(np.array([[amount_val]]))[0][0]
         time_scaled = (time_val - 94813.86) / 47488.15  # approx normalization
 
@@ -106,7 +106,7 @@ with tab1:
         probability = model.predict_proba(features)[0]
 
         st.divider()
-        st.markdown("### 🔎 Prediction Result")
+        st.markdown("###  Prediction Result")
 
         fraud_prob = probability[1] * 100
         legit_prob = probability[0] * 100
@@ -114,7 +114,7 @@ with tab1:
         if prediction == 1:
             st.markdown(f"""
             <div class="fraud-box">
-                <h1>🚨 FRAUD DETECTED</h1>
+                <h1> FRAUD DETECTED</h1>
                 <h2>Fraud Probability: {fraud_prob:.2f}%</h2>
                 <p>This transaction has been flagged as potentially fraudulent. Please review immediately.</p>
             </div>
@@ -122,7 +122,7 @@ with tab1:
         else:
             st.markdown(f"""
             <div class="legit-box">
-                <h1>✅ LEGITIMATE</h1>
+                <h1> LEGITIMATE</h1>
                 <h2>Legitimate Probability: {legit_prob:.2f}%</h2>
                 <p>This transaction appears to be legitimate. No action required.</p>
             </div>
@@ -130,18 +130,18 @@ with tab1:
 
         st.divider()
         c1, c2 = st.columns(2)
-        c1.metric("✅ Legitimate Score", f"{legit_prob:.2f}%")
-        c2.metric("🚨 Fraud Score", f"{fraud_prob:.2f}%")
+        c1.metric(" Legitimate Score", f"{legit_prob:.2f}%")
+        c2.metric(" Fraud Score", f"{fraud_prob:.2f}%")
 
         # Risk meter
         st.markdown("**Risk Level:**")
         st.progress(fraud_prob / 100)
         if fraud_prob < 30:
-            st.success("🟢 Low Risk")
+            st.success(" Low Risk")
         elif fraud_prob < 70:
-            st.warning("🟡 Medium Risk — Review Recommended")
+            st.warning(" Medium Risk — Review Recommended")
         else:
-            st.error("🔴 High Risk — Immediate Action Required")
+            st.error(" High Risk — Immediate Action Required")
 
 with tab2:
     st.markdown("### Upload a CSV file for batch prediction")
@@ -153,7 +153,7 @@ with tab2:
         df = pd.read_csv(uploaded_file)
         st.write(f"Loaded {len(df):,} transactions")
 
-        if st.button("🔍 Predict All", type="primary"):
+        if st.button(" Predict All", type="primary"):
             df['Amount_scaled'] = scaler.transform(df[['Amount']].values.reshape(-1, 1))
             df['Time_scaled'] = (df['Time'] - 94813.86) / 47488.15
 
@@ -163,19 +163,19 @@ with tab2:
             preds = model.predict(X)
             probas = model.predict_proba(X)[:, 1]
 
-            df['Prediction'] = ['🚨 FRAUD' if p == 1 else '✅ Legitimate' for p in preds]
+            df['Prediction'] = ['FRAUD' if p == 1 else 'Legitimate' for p in preds]
             df['Fraud_Probability_%'] = (probas * 100).round(2)
 
             fraud_count = sum(preds)
-            st.error(f"🚨 {fraud_count} Fraudulent transactions found out of {len(df):,}")
-            st.success(f"✅ {len(df) - fraud_count:,} Legitimate transactions")
+            st.error(f" {fraud_count} Fraudulent transactions found out of {len(df):,}")
+            st.success(f" {len(df) - fraud_count:,} Legitimate transactions")
 
             result_df = df[['Time', 'Amount', 'Prediction', 'Fraud_Probability_%']]
             st.dataframe(result_df, use_container_width=True)
 
             csv = result_df.to_csv(index=False)
-            st.download_button("⬇️ Download Results", csv, "fraud_predictions.csv", "text/csv")
+            st.download_button(" Download Results", csv, "fraud_predictions.csv", "text/csv")
 
 # ── Footer ────────────────────────────────────────────────────────────────────
 st.divider()
-st.markdown("*Built for Data Analytics Internship | Random Forest + SMOTE | Trained on Kaggle Credit Card Fraud Dataset*")
+
