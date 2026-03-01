@@ -1,5 +1,5 @@
 # bank-fraud-detection
-#A machine learning web app that detects fraudulent credit card transactions in real-time
+A machine learning web app that detects fraudulent credit card transactions in real-time
 ---
 
 ##  Problem Statement
